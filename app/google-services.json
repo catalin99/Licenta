@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "676151988725",
+    "firebase_url": "https://voteyourpresident.firebaseio.com",
+    "project_id": "voteyourpresident",
+    "storage_bucket": "voteyourpresident.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676151988725:android:4680bffa5b65d6bef990bc",
+        "android_client_info": {
+          "package_name": "catalin.facultate.graduation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "676151988725-cha7eri1k2hnrv583s9jem0emjag25j1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "catalin.facultate.graduation",
+            "certificate_hash": "81d1ddd7d79f2d9c5e113900d7571187c1d759de"
+          }
+        },
+        {
+          "client_id": "676151988725-r8nr5kk68mhcilp5q8k2hdi5kqdp5emh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDvwGz6PPuup2zG3N9UJQqV0h7L_4Puhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676151988725-r8nr5kk68mhcilp5q8k2hdi5kqdp5emh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
