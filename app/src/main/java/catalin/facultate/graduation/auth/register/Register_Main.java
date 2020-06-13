@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import catalin.facultate.graduation.R;
+import catalin.facultate.graduation.auth.login.Login_Main;
 import catalin.facultate.graduation.model.User;
 
 public class Register_Main extends AppCompatActivity {
@@ -35,5 +36,11 @@ public class Register_Main extends AppCompatActivity {
         Intent startIntent = new Intent(this, Register_Selfie.class);
         startIntent.putExtra(REGISTER_USER, user);
         startActivity(startIntent);
+    }
+
+    public void GoToLogin(View view)
+    {
+        Intent loginIntent = new Intent(this, Login_Main.class);
+        startActivity(loginIntent);
     }
 }

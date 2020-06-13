@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="180dp"
         android:layout_marginRight="30dp"
         android:ems="10"
         android:hint="EMAIL"
@@ -123,5 +123,20 @@
         android:layout_marginRight="30dp"
         android:onClick="GoToSelfieActivity"
         android:text="NEXT" />
+
+    <TextView
+        android:id="@+id/redirectToRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:onClick="GoToLogin"
+        android:text="Ai deja cont? Autentifică-te aici!"
+        android:textAlignment="center"
+        android:textColor="@color/itemSecondaryColor"
+        android:textColorLink="@color/itemSecondaryColor"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
 
 </LinearLayout>
