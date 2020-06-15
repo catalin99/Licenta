@@ -33,6 +33,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -55,6 +58,8 @@ public class Register_CI extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fstore;
     String userID;
+    StorageReference storageReference;
+    Uri resultUriCI = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,16 +68,6 @@ public class Register_CI extends AppCompatActivity {
 
     public void OpenPhoneCameraCI()
     {
-//        ContentValues values = new ContentValues();
-//        Date date = Calendar.getInstance().getTime();
-//        DateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
-//        String strDate = dateFormat.format(date);
-//        values.put(MediaStore.Images.Media.TITLE, "Photo - CI"+"-"+strDate);
-//        values.put(MediaStore.Images.Media.DESCRIPTION, "Photo CI");
-//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        image_uri_ci = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri_ci);
-//        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setAllowRotation(true)
@@ -106,69 +101,14 @@ public class Register_CI extends AppCompatActivity {
         TextView status = findViewById(R.id.statusTxt);
         if(status.getText().equals("Status: Date corecte!"))
         {
-            //TO DO:
-            //Try
-            //REGISTER IN DATABASE
-            //Catch
-            //Toast.makeText(this, "Error: Database register error. Try Again", Toast.LENGTH_LONG).show();
+            final Intent currentIntent = getIntent();
+            final User user = (User)currentIntent.getSerializableExtra(REGISTER_USER);
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
+            storageReference = FirebaseStorage.getInstance().getReference();
 
-            try {
-                final Intent currentIntent = getIntent();
-                final User user = (User)currentIntent.getSerializableExtra(REGISTER_USER);
-                firebaseAuth=FirebaseAuth.getInstance();
-                fstore = FirebaseFirestore.getInstance();
-                ProgressBar progressBar = findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.VISIBLE);
-                firebaseAuth.createUserWithEmailAndPassword(user.getEmail(),user.getPASSWORD()).addOnCompleteListener(
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful())
-                                {
-                                    Toast.makeText(Register_CI.this, "User created", Toast.LENGTH_LONG).show();
-                                    userID = firebaseAuth.getCurrentUser().getUid();
-                                    DocumentReference documentReference = fstore.collection("users").document(userID);
-                                    Map<String, Object> usrMap = new HashMap<>();
-                                    usrMap.put("Email", user.getEmail());
-                                    usrMap.put("CNP", user.getCNP());
-                                    usrMap.put("LastName", user.getNume());
-                                    usrMap.put("FirstName", user.getPrenume());
-                                    usrMap.put("Serie", user.getSerie());
-                                    usrMap.put("Number", user.getNumar());
-                                    usrMap.put("Nationality", user.getNationalitate());
-                                    usrMap.put("County", user.getJudet());
-                                    usrMap.put("Town", user.getOras());
-                                    usrMap.put("Locality", user.getLocalitate());
-                                    usrMap.put("Gender", user.getGender());
-                                    usrMap.put("Birthday", user.getDataNastere().toString());
-                                    usrMap.put("TYPE", user.getUserType());
-                                    documentReference.set(usrMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("AUTH", "OnSucces: user created");
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("AUTH", "OnFailure: " + e.toString());
-                                        }
-                                    });
-                                    Intent loginIntent = new Intent(Register_CI.this, Login_Main.class);
-                                    startActivity(loginIntent);
-                                }
-                                else
-                                {
-                                    Toast.makeText(Register_CI.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }
-                );
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            catch(Exception e)
-            {
 
-            }
+            uploadImageCIToStorageAndSaveUserData(user.getCNP(), user, progressBar);
 
         }
         else
@@ -176,6 +116,80 @@ public class Register_CI extends AppCompatActivity {
             Toast.makeText(this, "Error: Documente încărcate greșit/Date invalide", Toast.LENGTH_LONG).show();
             return;
         }
+    }
+
+    private void uploadImageCIToStorageAndSaveUserData(String CNP, final User user, final ProgressBar progressBar) {
+        final StorageReference fileReference = storageReference.child("user/"+CNP+"/ci.jpg");
+        fileReference.putFile(resultUriCI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(Register_CI.this, "Imaginea s-a uploadat cu succes!", Toast.LENGTH_SHORT).show();
+                try {
+                    firebaseAuth=FirebaseAuth.getInstance();
+                    fstore = FirebaseFirestore.getInstance();
+                    firebaseAuth.createUserWithEmailAndPassword(user.getEmail(),user.getPASSWORD()).addOnCompleteListener(
+                            new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful())
+                                    {
+                                        Toast.makeText(Register_CI.this, "User created", Toast.LENGTH_LONG).show();
+                                        userID = firebaseAuth.getCurrentUser().getUid();
+                                        DocumentReference documentReference = fstore.collection("users").document(userID);
+                                        Map<String, Object> usrMap = new HashMap<>();
+                                        usrMap.put("Email", user.getEmail());
+                                        usrMap.put("CNP", user.getCNP());
+                                        usrMap.put("LastName", user.getNume());
+                                        usrMap.put("FirstName", user.getPrenume());
+                                        usrMap.put("Serie", user.getSerie());
+                                        usrMap.put("Number", user.getNumar());
+                                        usrMap.put("Nationality", user.getNationalitate());
+                                        usrMap.put("County", user.getJudet());
+                                        usrMap.put("Town", user.getOras());
+                                        usrMap.put("Locality", user.getLocalitate());
+                                        usrMap.put("Gender", user.getGender());
+                                        usrMap.put("Birthday", user.getDataNastere().toString());
+                                        usrMap.put("TYPE", user.getUserType());
+                                        documentReference.set(usrMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("AUTH", "OnSucces: user created");
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("AUTH", "OnFailure: " + e.toString());
+                                            }
+                                        });
+
+
+                                        Intent loginIntent = new Intent(Register_CI.this, Login_Main.class);
+                                        startActivity(loginIntent);
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(Register_CI.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }
+                    );
+
+                }
+                catch(Exception e)
+                {
+                    Toast.makeText(Register_CI.this, "Error: Database register error. Try Again", Toast.LENGTH_LONG).show();
+                }
+                finally {
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Register_CI.this, "Imaginea 1 nu a putut fi uploadata!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -200,12 +214,7 @@ public class Register_CI extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
-//            if(requestCode == IMAGE_CAPTURE_CODE) {
-//                CropImage.activity()
-//                        .setGuidelines(CropImageView.Guidelines.ON)
-//                        .start(this);
-//            }
-//            else
+
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Uri resultUri = result.getUri();
@@ -214,6 +223,8 @@ public class Register_CI extends AppCompatActivity {
                 imageView.setImageURI(resultUri);
                 TextView status = findViewById(R.id.statusTxt);
                 status.setText("Status : Imagine încărcată. Se verifică...");
+                resultUriCI = resultUri;
+
                 Boolean recognizeResult = RecognizeTextFromCI(imageView, resultUri);
                 if(recognizeResult)
                 {

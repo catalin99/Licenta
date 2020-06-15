@@ -1,0 +1,13 @@
+W:\Android\VoteYourPresident\AIBot\obj\Debug\AIBot.csprojAssemblyReference.cache
+W:\Android\VoteYourPresident\AIBot\obj\Debug\AIBot.csproj.CoreCompileInputs.cache
+W:\Android\VoteYourPresident\AIBot\bin\Debug\AIBot.exe.config
+W:\Android\VoteYourPresident\AIBot\bin\Debug\AIBot.exe
+W:\Android\VoteYourPresident\AIBot\bin\Debug\AIBot.pdb
+W:\Android\VoteYourPresident\AIBot\bin\Debug\Microsoft.ProjectOxford.Face.dll
+W:\Android\VoteYourPresident\AIBot\bin\Debug\Newtonsoft.Json.dll
+W:\Android\VoteYourPresident\AIBot\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+W:\Android\VoteYourPresident\AIBot\bin\Debug\Newtonsoft.Json.xml
+W:\Android\VoteYourPresident\AIBot\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+W:\Android\VoteYourPresident\AIBot\obj\Debug\AIBot.csproj.CopyComplete
+W:\Android\VoteYourPresident\AIBot\obj\Debug\AIBot.exe
+W:\Android\VoteYourPresident\AIBot\obj\Debug\AIBot.pdb
