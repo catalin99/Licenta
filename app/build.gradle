@@ -40,4 +40,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:20.1.0'
     implementation 'com.github.eddydn:EDMTDevCognitiveFace:1.7'
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
+    implementation 'id.zelory:compressor:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

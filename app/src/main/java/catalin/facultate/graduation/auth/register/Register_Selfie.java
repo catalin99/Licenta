@@ -42,6 +42,7 @@ import java.util.Date;
 
 import catalin.facultate.graduation.R;
 import catalin.facultate.graduation.model.User;
+import id.zelory.compressor.Compressor;
 
 import static catalin.facultate.graduation.auth.register.Register_Main.REGISTER_USER;
 
