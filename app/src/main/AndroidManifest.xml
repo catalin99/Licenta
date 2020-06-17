@@ -9,7 +9,7 @@
 
     <meta-data
         android:name="com.google.android.gms.vision.DEPENDENCIES"
-        android:value = "face" />
+        android:value="face" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".auth.login.Login_FaceRecognition"></activity>
+        <activity android:name=".votesystem.admin.NewVote"></activity>
+        <activity android:name=".auth.login.Login_FaceRecognition" />
         <activity android:name=".auth.register.Register_CI" />
         <activity android:name=".auth.register.Register_Selfie" />
         <activity android:name=".auth.register.Register_Main" />

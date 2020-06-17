@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import catalin.facultate.graduation.auth.login.Login_Main;
 import catalin.facultate.graduation.auth.register.Register_Main;
+import catalin.facultate.graduation.votesystem.admin.NewVote;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
@@ -50,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
             LoadProfileDetails();
 
         }
+    }
+
+    public void GoToAdminPanel(View view)
+    {
+        Intent adminIntent = new Intent(this, NewVote.class);
+        startActivity(adminIntent);
     }
 
     private void LoadProfileDetails()

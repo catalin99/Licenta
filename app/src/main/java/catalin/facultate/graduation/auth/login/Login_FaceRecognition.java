@@ -144,165 +144,165 @@ public class Login_FaceRecognition extends AppCompatActivity {
         }
     }
 
-//    class detectTask extends AsyncTask<InputStream, String, edmt.dev.edmtdevcognitiveface.Contract.Face[]> {
-//        AlertDialog alertDialog =  new SpotsDialog.Builder()
-//                .setContext(Login_FaceRecognition.this)
-//                .setCancelable(false)
-//                .build();
-//
-//        @Override
-//        protected void onPreExecute() {
-//            //alertDialog.show();
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(String... values) {
-//            alertDialog.setMessage(values[0]);
-//        }
-//
-//        @Override
-//        protected edmt.dev.edmtdevcognitiveface.Contract.Face[] doInBackground(InputStream... inputStreams) {
-//            try {
-//                publishProgress("Detecting...");
-//                edmt.dev.edmtdevcognitiveface.Contract.Face[] results = faceServiceClient.detect(inputStreams[0], true, false, null);
-//                if(results == null)
-//                    return null;
-//                else
-//                    return results;
-//            } catch (ClientException | IOException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(edmt.dev.edmtdevcognitiveface.Contract.Face[] faces) {
-//            if(faces == null)
-//                Toast.makeText(Login_FaceRecognition.this, "No face detected",  Toast.LENGTH_SHORT).show();
-//            else
-//            {
-//                imageView.setImageBitmap(Utils.drawFaceRectangleOnBitmap(bitmap,faces, Color.YELLOW));
-//                faceDetected = faces;
-//                //IDENTIFY
-//                if(faceDetected.length>0)
-//                {
-//                    final UUID[] faceIDs = new UUID[faceDetected.length];
-//                    for(int i = 0; i<faceDetected.length; i++)
-//                    {
-//                        faceIDs[i]=faceDetected[i].faceId;
-//                    }
-//                    new IdentificationTask().execute(faceIDs);
-//                }
-//            }
-//        }
-//    }
-//
-//    class IdentificationTask extends AsyncTask<UUID, String, IdentifyResult[]>
-//    {
-//
-//        AlertDialog alertDialog =  new SpotsDialog.Builder()
-//                .setContext(Login_FaceRecognition.this)
-//                .setCancelable(false)
-//                .build();
-//
-//        @Override
-//        protected void onPreExecute() {
-//            //alertDialog.show();
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(String... values) {
-//            alertDialog.setMessage(values[0]);
-//        }
-//
-//        @Override
-//        protected IdentifyResult[] doInBackground(UUID... uuids) {
-//            try{
-//                publishProgress("Getting person group status...");
-//                TrainingStatus trainingStatus = null;
-//                trainingStatus = faceServiceClient.getPersonGroupTrainingStatus(personGroupID);
-//
-//
-//                if(trainingStatus.status !=  TrainingStatus.Status.Succeeded)
-//                {
-//                    Log.d("ERROR", "Training status error:" + trainingStatus.status);
-//                }
-//
-//                publishProgress("Indentifying...");
-//                IdentifyResult[] results = faceServiceClient.identity(personGroupID, uuids, 1);
-//                return results;
-//            } catch (ClientException | IOException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(IdentifyResult[] identifyResults) {
-//            alertDialog.dismiss();
-//            if(identifyResults != null)
-//            {
-//                for(IdentifyResult identifyResult : identifyResults)
-//                {
-//                    new PersonDetectionTask().execute(identifyResult.candidates.get(0).personId);
-//                }
-//            }
-//        }
-//    }
-//
-//    class PersonDetectionTask extends AsyncTask<UUID, String, edmt.dev.edmtdevcognitiveface.Contract.Person> {
-//
-//        AlertDialog alertDialog =  new SpotsDialog.Builder()
-//                .setContext(Login_FaceRecognition.this)
-//                .setCancelable(false)
-//                .build();
-//
-//        @Override
-//        protected void onPreExecute() {
-//            //alertDialog.show();
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(String... values) {
-//            alertDialog.setMessage(values[0]);
-//        }
-//
-//        @Override
-//        protected edmt.dev.edmtdevcognitiveface.Contract.Person doInBackground(UUID... uuids) {
-//            try {
-//                return faceServiceClient.getPerson(personGroupID, uuids[0]);
-//            } catch (ClientException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Person person) {
-//            alertDialog.dismiss();
-//            imageView.setImageBitmap(Utils.drawFaceRectangleWithTextOnBitmap(bitmap, faceDetected, person.name, Color.YELLOW, 100));
-//            ProgressBar progressBar = findViewById(R.id.progressBarLogin);
-//            progressBar.setVisibility(View.INVISIBLE);
-//            Toast.makeText(Login_FaceRecognition.this, "COMPLETE", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//    private void FacialRecognition() {
-//
-//
-//        imageView =  findViewById(R.id.imgRecognition);
-//        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-//        bitmap =  drawable.getBitmap();
-//
-//        ByteArrayOutputStream outputStream  = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-//        ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-//        new detectTask().execute(inputStream);
-//
-//
-//    }
+    class detectTask extends AsyncTask<InputStream, String, edmt.dev.edmtdevcognitiveface.Contract.Face[]> {
+        AlertDialog alertDialog =  new SpotsDialog.Builder()
+                .setContext(Login_FaceRecognition.this)
+                .setCancelable(false)
+                .build();
+
+        @Override
+        protected void onPreExecute() {
+            //alertDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            alertDialog.setMessage(values[0]);
+        }
+
+        @Override
+        protected edmt.dev.edmtdevcognitiveface.Contract.Face[] doInBackground(InputStream... inputStreams) {
+            try {
+                publishProgress("Detecting...");
+                edmt.dev.edmtdevcognitiveface.Contract.Face[] results = faceServiceClient.detect(inputStreams[0], true, false, null);
+                if(results == null)
+                    return null;
+                else
+                    return results;
+            } catch (ClientException | IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(edmt.dev.edmtdevcognitiveface.Contract.Face[] faces) {
+            if(faces == null)
+                Toast.makeText(Login_FaceRecognition.this, "No face detected",  Toast.LENGTH_SHORT).show();
+            else
+            {
+                imageView.setImageBitmap(Utils.drawFaceRectangleOnBitmap(bitmap,faces, Color.YELLOW));
+                faceDetected = faces;
+                //IDENTIFY
+                if(faceDetected.length>0)
+                {
+                    final UUID[] faceIDs = new UUID[faceDetected.length];
+                    for(int i = 0; i<faceDetected.length; i++)
+                    {
+                        faceIDs[i]=faceDetected[i].faceId;
+                    }
+                    new IdentificationTask().execute(faceIDs);
+                }
+            }
+        }
+    }
+
+    class IdentificationTask extends AsyncTask<UUID, String, IdentifyResult[]>
+    {
+
+        AlertDialog alertDialog =  new SpotsDialog.Builder()
+                .setContext(Login_FaceRecognition.this)
+                .setCancelable(false)
+                .build();
+
+        @Override
+        protected void onPreExecute() {
+            //alertDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            alertDialog.setMessage(values[0]);
+        }
+
+        @Override
+        protected IdentifyResult[] doInBackground(UUID... uuids) {
+            try{
+                publishProgress("Getting person group status...");
+                TrainingStatus trainingStatus = null;
+                trainingStatus = faceServiceClient.getPersonGroupTrainingStatus(personGroupID);
+
+
+                if(trainingStatus.status !=  TrainingStatus.Status.Succeeded)
+                {
+                    Log.d("ERROR", "Training status error:" + trainingStatus.status);
+                }
+
+                publishProgress("Indentifying...");
+                IdentifyResult[] results = faceServiceClient.identity(personGroupID, uuids, 1);
+                return results;
+            } catch (ClientException | IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(IdentifyResult[] identifyResults) {
+            alertDialog.dismiss();
+            if(identifyResults != null)
+            {
+                for(IdentifyResult identifyResult : identifyResults)
+                {
+                    new PersonDetectionTask().execute(identifyResult.candidates.get(0).personId);
+                }
+            }
+        }
+    }
+
+    class PersonDetectionTask extends AsyncTask<UUID, String, edmt.dev.edmtdevcognitiveface.Contract.Person> {
+
+        AlertDialog alertDialog =  new SpotsDialog.Builder()
+                .setContext(Login_FaceRecognition.this)
+                .setCancelable(false)
+                .build();
+
+        @Override
+        protected void onPreExecute() {
+            //alertDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            alertDialog.setMessage(values[0]);
+        }
+
+        @Override
+        protected edmt.dev.edmtdevcognitiveface.Contract.Person doInBackground(UUID... uuids) {
+            try {
+                return faceServiceClient.getPerson(personGroupID, uuids[0]);
+            } catch (ClientException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Person person) {
+            alertDialog.dismiss();
+            imageView.setImageBitmap(Utils.drawFaceRectangleWithTextOnBitmap(bitmap, faceDetected, person.name, Color.YELLOW, 100));
+            ProgressBar progressBar = findViewById(R.id.progressBarLogin);
+            progressBar.setVisibility(View.INVISIBLE);
+            Toast.makeText(Login_FaceRecognition.this, "COMPLETE", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void FacialRecognition() {
+
+
+        imageView =  findViewById(R.id.imgRecognition);
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        bitmap =  drawable.getBitmap();
+
+        ByteArrayOutputStream outputStream  = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        new detectTask().execute(inputStream);
+
+
+    }
 
     private void OpenPhoneCamera()
     {
