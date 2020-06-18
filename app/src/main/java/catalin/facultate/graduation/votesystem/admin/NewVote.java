@@ -33,6 +33,9 @@ import com.google.android.gms.vision.text.Line;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,6 +46,7 @@ import java.util.Map;
 import catalin.facultate.graduation.R;
 import catalin.facultate.graduation.auth.login.Login_FaceRecognition;
 import catalin.facultate.graduation.auth.login.Login_Main;
+import catalin.facultate.graduation.auth.register.Register_CI;
 import dmax.dialog.SpotsDialog;
 
 public class NewVote extends AppCompatActivity {
@@ -53,7 +57,9 @@ public class NewVote extends AppCompatActivity {
     private int counter;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore fstore;
+    private StorageReference storageReference;
     private AlertDialog alertDialog;
+    private Uri ActualImg = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class NewVote extends AppCompatActivity {
 
 
         fstore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         alertDialog =  new SpotsDialog.Builder()
                 .setContext(NewVote.this)
@@ -142,18 +149,6 @@ public class NewVote extends AppCompatActivity {
         edittext.setText(sdf.format(myCalendar.getTime()));
     }
 
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor =this.getContentResolver().query(contentUri, proj, "", null, "");
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
     public void PickPhoto(View view){
         Intent intentPhoto = new Intent();
         intentPhoto.setType("image/*");
@@ -204,6 +199,7 @@ public class NewVote extends AppCompatActivity {
         activityMap.put("UserCreator", firebaseAuth.getCurrentUser().getUid());
         activityMap.put("Active", true);
         activityMap.put("Finalized", false);
+        activityMap.put("TotalVotes", 0);
         activityMap.put("Winner", "NONE");
         documentReference.set(activityMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -226,11 +222,63 @@ public class NewVote extends AppCompatActivity {
         if(VoteID == null)
         {
             Toast.makeText(this, "Trebuie să setezi detaliile pentru început", Toast.LENGTH_LONG).show();
+            return;
         }
-        else
+        if(ActualImg == null)
         {
-            AddNewOption();
+            Toast.makeText(this, "Trebuie să setezi o imagine pentru opțiune", Toast.LENGTH_LONG).show();
+            return;
         }
+        TextView optionInfoTemp = findViewById(R.id.OptionInfo);
+        if(optionInfoTemp.getText().toString().isEmpty() || optionInfoTemp.getText() == null)
+        {
+            Toast.makeText(this, "Trebuie să setezi un nume pentru opțiune", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        alertDialog.setMessage("Se încarcă opțiunea în baza de date");
+        alertDialog.show();
+        final int contextCount = counter+1;
+        final StorageReference fileReference = storageReference.child("Options/"+VoteID+"/"+contextCount+".jpg");
+        fileReference.putFile(ActualImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                TextView optionInfo = findViewById(R.id.OptionInfo);
+                final DocumentReference documentRefOption = fstore.collection("Options").document();
+                Map<String, Object> optionMap = new HashMap<>();
+                optionMap.put("ActivityID", VoteID);
+                optionMap.put("OptionTitle",optionInfo.getText().toString());
+                optionMap.put("ImgLocation","Options/"+VoteID+"/"+contextCount+".jpg");
+                optionMap.put("Votes", 0);
+                optionMap.put("Cancelled", false);
+                documentRefOption.set(optionMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("AUTH", "OnSucces: Vote Activity added");
+                        alertDialog.dismiss();
+
+                        //add data on frontend
+                        AddNewOption();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("AUTH", "OnFailure: " + e.toString());
+
+                        alertDialog.dismiss();
+                        Toast.makeText(NewVote.this, "Eroare la încărcarea datelor. Reîncearcă", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                alertDialog.dismiss();
+                Toast.makeText(NewVote.this, "Eroare la încărcarea pozei. Reîncearcă", Toast.LENGTH_LONG).show();
+            }
+        });
+        alertDialog.dismiss();
+
     }
 
     private void AddNewOption()
@@ -317,9 +365,9 @@ public class NewVote extends AppCompatActivity {
             if (requestCode == 200) {
                 Uri selectedImageUri = imageReturnedIntent.getData();
                 if (null != selectedImageUri) {
-                    String path = getPathFromURI(selectedImageUri);
                     ImageView picture =  findViewById(R.id.pictureVote);
                     picture.setImageURI(selectedImageUri);
+                    ActualImg = selectedImageUri;
                 }
             }
         }

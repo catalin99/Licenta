@@ -5,6 +5,9 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="backgroundColor">#F7EBE8</color>
     <color name="backgroundColorVoteOption">#ffdacc</color>
+    <color name="votecoloractive">#41FF00</color>
+    <color name="votecolorold">#FF4A4A</color>
+    <color name="votecolorsucces">#4AFFF6</color>
     <color name="textColor">#1E1E24</color>
     <color name="menuColor">#444140</color>
     <color name="itemColor">#FFA987</color>

@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import catalin.facultate.graduation.auth.login.Login_Main;
 import catalin.facultate.graduation.auth.register.Register_Main;
 import catalin.facultate.graduation.votesystem.admin.NewVote;
+import catalin.facultate.graduation.votesystem.vote.VoteSessions;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
@@ -57,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
     public void GoToAdminPanel(View view)
     {
         Intent adminIntent = new Intent(this, NewVote.class);
+        startActivity(adminIntent);
+    }
+
+    public void GoToVoteSessions(View view)
+    {
+        Intent adminIntent = new Intent(this, VoteSessions.class);
         startActivity(adminIntent);
     }
 
