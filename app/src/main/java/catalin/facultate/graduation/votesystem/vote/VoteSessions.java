@@ -39,6 +39,10 @@ public class VoteSessions extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore fstore;
+    public final static String SessionID = "catalin.facultate.graduation.votesystem.vote.sessuionid";
+    public final static String SessionName = "catalin.facultate.graduation.votesystem.vote.sessuionname";
+    public final static String SessionActiveDate = "catalin.facultate.graduation.votesystem.vote.sessuionactivedate";
+    public final static String SessionActive = "catalin.facultate.graduation.votesystem.vote.sessuionactive";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,8 +168,8 @@ public class VoteSessions extends AppCompatActivity {
         winnerOrVotes.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.textColor));
         if((boolean) currentData.get("Active"))
         {
-            //winnerOrVotes.setText(currentData.get("TotalVotes").toString() + " voturi");
-            winnerOrVotes.setText("0" + " voturi");
+            winnerOrVotes.setText(currentData.get("TotalVotes").toString() + " voturi");
+            //winnerOrVotes.setText("0" + " voturi");
         }
         else if(currentData.get("Winner").equals("NONE"))
         {
@@ -190,8 +194,10 @@ public class VoteSessions extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent OptionsIntent = new Intent(VoteSessions.this, VoteOptions.class);
-                OptionsIntent.putExtra("ID", docID);
-                OptionsIntent.putExtra("Name", currentData.get("VoteTitle").toString());
+                OptionsIntent.putExtra(SessionID, docID);
+                OptionsIntent.putExtra(SessionName, currentData.get("VoteTitle").toString());
+                OptionsIntent.putExtra(SessionActiveDate, currentData.get("ActiveDate").toString());
+                OptionsIntent.putExtra(SessionActive, (Boolean) currentData.get("Active"));
                 startActivity(OptionsIntent);
             }
         });

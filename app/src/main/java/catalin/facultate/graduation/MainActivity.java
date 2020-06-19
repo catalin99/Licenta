@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,6 +26,7 @@ import catalin.facultate.graduation.auth.login.Login_Main;
 import catalin.facultate.graduation.auth.register.Register_Main;
 import catalin.facultate.graduation.votesystem.admin.NewVote;
 import catalin.facultate.graduation.votesystem.vote.VoteSessions;
+import io.reactivex.annotations.NonNull;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     StorageReference storageReference;
     String userID;
     String CNP;
+    FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent adminIntent = new Intent(this, VoteSessions.class);
         startActivity(adminIntent);
+    }
+
+
+    public void LogOut(View view)
+    {
+        fAuth.signOut();
+        Intent loginIntent = new Intent(this, Login_Main.class);
+        startActivity(loginIntent);
     }
 
     private void LoadProfileDetails()

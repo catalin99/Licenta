@@ -1,29 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".votesystem.vote.VoteOptions">
-
-    <TextView
-        android:id="@+id/textViewid"
-        android:layout_width="wrap_content"
+    android:background="@color/backgroundColor">
+    <LinearLayout
+        android:id="@+id/PrincLinearView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="676dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/backgroundColor"
+        android:orientation="vertical"
+        android:paddingBottom="30dp"
+        tools:context=".votesystem.vote.VoteOptions">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@color/itemColor"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <TextView
-        android:id="@+id/textViewname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="TextView"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="195dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/toolbarTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:fontFamily="@font/aclonica"
+                android:gravity="center_horizontal"
+                android:text="VoteYourPresident"
+                android:textColor="@color/itemSecondaryColor"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:id="@+id/TitleTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:text="Eroare"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:id="@+id/SecLinearViewOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundColor"
+            android:orientation="vertical"
+            android:paddingBottom="30dp">
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/VotedOptionName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:text="Opțiune votată: Niciuna"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/SubmitBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Trimite votul"
+            android:onClick="SubmitVote"
+            android:layout_gravity="center"
+            android:textColor="@color/textColor" />
+        <TextView
+            android:id="@+id/Error"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:text="Totul merge bine"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"
+             />
+    </LinearLayout>
+
+
+
+</ScrollView>

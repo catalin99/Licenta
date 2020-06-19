@@ -116,7 +116,7 @@ public class Login_FaceRecognition extends AppCompatActivity {
             Toast.makeText(this, state.getText().toString(), Toast.LENGTH_LONG).show();
         else
         {
-            Toast.makeText(this, "Implementing...Facial Recognition", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Implementing...Facial Recognition", Toast.LENGTH_LONG).show();
             final ProgressBar progressBar = findViewById(R.id.progressBarLogin);
             progressBar.setVisibility(View.VISIBLE);
             //FacialRecognition();
