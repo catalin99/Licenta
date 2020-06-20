@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -135,26 +136,61 @@ public class VoteOptions extends AppCompatActivity {
                 Log.d("AUTH", "OnSucces: Vote submited in Votes");
 
                 //update total number of votes
-                DocumentReference documentRef= fstore.collection("Activities").document(ID);
-                Map<String, Object> activityMap = new HashMap<>();
-                int currentNoVotes = 1;
-                if(activityMap.get("TotalVotes")!=null) {
-                    currentNoVotes = Integer.parseInt(activityMap.get("TotalVotes").toString());
-                    currentNoVotes = currentNoVotes + 1;
-                }
-                activityMap.put("TotalVotes", currentNoVotes);
-                documentRef.update(activityMap);
+                final DocumentReference documentRef= fstore.collection("Activities").document(ID);
+                documentRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@androidx.annotation.NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Map<String, Object> activityMap = new HashMap<>();
+                                int currentNoVotes = Integer.parseInt(document.getData().get("TotalVotes").toString());
+                                currentNoVotes = currentNoVotes + 1;
+                                activityMap.put("TotalVotes", currentNoVotes);
+                                documentRef.update(activityMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        final DocumentReference documentRefOpt= fstore.collection("Options").document(OptionVotedID);
+                                        documentRefOpt.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@androidx.annotation.NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Document found in the offline cache
+                                                    DocumentSnapshot document = task.getResult();
+                                                    Map<String, Object> activityMapOpt = new HashMap<>();
+                                                    int currentNoVotesOpt = Integer.parseInt(document.getData().get("Votes").toString());
+                                                    currentNoVotesOpt = currentNoVotesOpt + 1;
+                                                    activityMapOpt.put("Votes", currentNoVotesOpt);
+                                                    documentRefOpt.update(activityMapOpt).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Toast.makeText(VoteOptions.this, "Vot submis cu succes", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@androidx.annotation.NonNull Exception e) {
+                                                            Toast.makeText(VoteOptions.this, "Eroare la incarcare optiuni", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                                    Log.d("ERR", "Cached document data: " + document.getData());
+                                                } else {
+                                                    Log.d("ERR", "Cached get failed: ", task.getException());
+                                                }
+                                            }
+                                        });
 
-                DocumentReference documentRefOpt= fstore.collection("Options").document(OptionVotedID);
-                Map<String, Object> activityMapOpt = new HashMap<>();
-                int currentNoVotesOpt = 1;
-                if(activityMapOpt.get("Votes")!=null) {
-                    currentNoVotesOpt = Integer.parseInt(activityMapOpt.get("Votes").toString());
-                    currentNoVotesOpt = currentNoVotesOpt + 1;
-                }
-                activityMap.put("Votes", currentNoVotesOpt);
-                documentRefOpt.update(activityMapOpt);
-                Toast.makeText(VoteOptions.this, "Vot submis cu succes", Toast.LENGTH_LONG).show();
+
+                                    }
+                                });
+                            } else {
+                                Log.d("ERR", "No such document");
+                            }
+                        } else {
+                            Log.d("ERR", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -181,7 +217,7 @@ public class VoteOptions extends AppCompatActivity {
                             Button submit = findViewById(R.id.SubmitBtn);
 
                             java.util.Date calendar = Calendar.getInstance().getTime();
-                            SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yy");
+                            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
                             String formattedDate = df.format(calendar);
                             if(Active == false)
                             {
@@ -191,7 +227,7 @@ public class VoteOptions extends AppCompatActivity {
                             }
                             else if(!formattedDate.equals(Date))
                             {
-                                error.setText("Sesiune poate fi votate doar in data de "+Date);
+                                error.setText("Sesiunea poate fi votate doar in data de "+Date);
                                 error.setVisibility(View.VISIBLE);
                                 submit.setEnabled(false);
                             }

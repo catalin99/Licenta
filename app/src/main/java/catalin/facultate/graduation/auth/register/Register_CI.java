@@ -150,6 +150,7 @@ public class Register_CI extends AppCompatActivity {
                                         usrMap.put("Gender", user.getGender());
                                         usrMap.put("Birthday", user.getDataNastere().toString());
                                         usrMap.put("TYPE", user.getUserType());
+                                        usrMap.put("APPROVED", false);
                                         documentReference.set(usrMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {

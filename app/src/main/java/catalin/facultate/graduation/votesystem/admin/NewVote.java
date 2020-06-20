@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,11 +28,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.text.Line;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +47,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import catalin.facultate.graduation.MainActivity;
 import catalin.facultate.graduation.R;
 import catalin.facultate.graduation.auth.login.Login_FaceRecognition;
 import catalin.facultate.graduation.auth.login.Login_Main;
@@ -72,6 +77,12 @@ public class NewVote extends AppCompatActivity {
             Toast.makeText(this, "Trebuie să fii autentificat pentru a putea accesa această pagină", Toast.LENGTH_LONG).show();
             startActivity(loginIntent);
         }
+//        else if (IsAdmin() == false)
+//        {
+//            Intent mainIntent = new Intent(this, MainActivity.class);
+//            Toast.makeText(this, "Trebuie să fii admin pentru a putea accesa această pagină", Toast.LENGTH_LONG).show();
+//            startActivity(mainIntent);
+//        }
 
         setContentView(R.layout.activity_new_vote);
 
@@ -143,8 +154,29 @@ public class NewVote extends AppCompatActivity {
         });
     }
 
+    private boolean IsAdmin()
+    {
+        final boolean[] admin = new boolean[1];
+        final DocumentReference documentRef = fstore.collection("users").document(firebaseAuth.getCurrentUser().getUid());
+        documentRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@androidx.annotation.NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Map<String, Object> user = document.getData();
+
+                    if(user.get("TYPE").toString().equals("Admin"))
+                        admin[0] = true;
+                    else
+                        admin[0] = false;
+                }
+            }
+        });
+        return admin[0];
+    }
+
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         edittext.setText(sdf.format(myCalendar.getTime()));
     }

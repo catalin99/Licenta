@@ -1,17 +1,27 @@
-﻿using Microsoft.ProjectOxford.Face;
+﻿using Firebase.Auth;
+using Firebase.Storage;
+using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+
 
 namespace AIBot
 {
-    class Program
+    public class Program
     {
-        static FaceServiceClient faceServiceClient = new FaceServiceClient("0fa90b7f802f43c39c211da3f8247500", "https://eastus.api.cognitive.microsoft.com/face/v1.0");
+
+        private static string apiKey = "AIzaSyC3no3w-T0ayGe4FwYWH8ugy6B1CkKZjzI";
+        private static string Bucket = "voteyourpresident.appspot.com";
+        private static string AuthEmail = "firebaseauth@aibot.ro";
+        private static string AuthPassword = "Nex@433FcRcgn";
+        private static FaceServiceClient faceServiceClient = new FaceServiceClient("0fa90b7f802f43c39c211da3f8247500", "https://eastus.api.cognitive.microsoft.com/face/v1.0");
 
         public static async void CreatePersonGroup(string personGroupId, string personGroupName)
         {
@@ -27,13 +37,15 @@ namespace AIBot
 
         }
 
-        public static async void AddPersonToGroup(string personGroupId, string personName, string imgPath)
+        public static async void AddPersonToGroup(string personGroupId, string personName)
         {
+
             try
             {
                 await faceServiceClient.GetPersonGroupAsync(personGroupId);
                 CreatePersonResult personResult = await faceServiceClient.CreatePersonAsync(personGroupId, personName);
-                DetectFaceAndRegister(personGroupId, personResult, imgPath);
+                DetectFaceAndRegister(personGroupId, personResult, personName);
+                Console.WriteLine("Finished");
             }
             catch (Exception e)
             {
@@ -41,14 +53,67 @@ namespace AIBot
             }
         }
 
-        private static async void DetectFaceAndRegister(string personGroupId, CreatePersonResult personResult, string imgPath)
+        private static async void DetectFaceAndRegister(string personGroupId, CreatePersonResult personResult, string cnp)
         {
             //throw new NotImplementedException();
-            foreach (var image in Directory.GetFiles(imgPath, "*.*"))
+            //foreach (var image in Directory.GetFiles(imgPath, "*.*"))
+            //{
+            //    using (Stream S = File.OpenRead(image))
+            //        await faceServiceClient.AddPersonFaceAsync(personGroupId, personResult.PersonId, S);
+            //}
+
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+            var login = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+            var cancellation = new CancellationTokenSource();
+            var downloadUrl1 = await new FirebaseStorage(
+                Bucket,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(login.FirebaseToken),
+                    ThrowOnCancel = true
+                })
+                .Child("user")
+                .Child(cnp)
+                .Child("facial1.jpg").GetDownloadUrlAsync();
+            string url1 = downloadUrl1.ToString();
+
+
+            var downloadUrl2 = await new FirebaseStorage(
+                Bucket,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(login.FirebaseToken),
+                    ThrowOnCancel = true
+                })
+                .Child("user")
+                .Child(cnp)
+                .Child("facial2.jpg").
+                GetDownloadUrlAsync();
+            string url2 = downloadUrl2.ToString();
+
+            //using (WebClient client = new WebClient())
+            //{
+            //    // OR 
+            //    client.DownloadFileAsync(new Uri(url1), @"c:\temp\image35.png");
+            //}
+
+            var request1 = WebRequest.Create(url1);
+
+            using (var response = request1.GetResponse())
+            using (var stream = response.GetResponseStream())
             {
-                using (Stream S = File.OpenRead(image))
-                    await faceServiceClient.AddPersonFaceAsync(personGroupId, personResult.PersonId, S);
+                await faceServiceClient.AddPersonFaceAsync(personGroupId, personResult.PersonId, stream);
             }
+
+            var request2 = WebRequest.Create(url2);
+
+            using (var response = request2.GetResponse())
+            using (var stream = response.GetResponseStream())
+            {
+                await faceServiceClient.AddPersonFaceAsync(personGroupId, personResult.PersonId, stream);
+            }
+
+
         }
 
         private static async void TrainingAI(string personGroupId)
@@ -103,10 +168,10 @@ namespace AIBot
 
         static void Main(string[] args)
         {
-            CreatePersonGroup("userstorecognize", "userstorecognize");
-            AddPersonToGroup("userstorecognize", "1990616100159", @"W:\Android\imagesAI");
-            TrainingAI("userstorecognize");
-            IdentifyFace("userstorecognize", @"W:\Android\recognizeAI\delia.jpg");
+            //CreatePersonGroup("recognizeuseraibot", "recognizeuseraibot");
+            //AddPersonToGroup("recognizeuseraibot", "1950715100138");
+            TrainingAI("recognizeuseraibot");
+            //IdentifyFace("userstorecognize", @"W:\Android\recognizeAI\delia.jpg");
             //faceServiceClient.DeletePersonGroupAsync("usertorecognize");
             Console.ReadKey();
 

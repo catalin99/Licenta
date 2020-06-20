@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:paddingBottom="30dp"
+        android:orientation="vertical"
+        tools:context=".votesystem.admin.UserEdit">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@color/itemColor"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:id="@+id/toolbarTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:fontFamily="@font/aclonica"
+                android:gravity="center_horizontal"
+                android:text="VoteYourPresident"
+                android:textColor="@color/itemSecondaryColor"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/LastName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="NUME" />
+                <EditText
+                    android:id="@+id/FirstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="PRENUME" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/profile1edit"
+                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_marginRight="10dp"
+                app:srcCompat="@drawable/ic_image_black_24dp" />
+
+            <ImageView
+                android:id="@+id/profile2edit"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                app:srcCompat="@drawable/ic_image_black_24dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ciphoto"
+            android:layout_height="200dp"
+            android:layout_width="315dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_image_black_24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/EmailTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="EMAIL: " />
+            <EditText
+                android:id="@+id/EmailInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textSize="18dp"
+                android:text="NONE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/CNPTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="CNP: " />
+            <EditText
+                android:id="@+id/CNPInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textSize="18dp"
+                android:text="NONE" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/JUDETTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="JUDET: " />
+            <EditText
+                android:id="@+id/JUDETInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textSize="18dp"
+                android:text="NONE" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/ORASTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="ORAS: " />
+            <EditText
+                android:id="@+id/ORASInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textSize="18dp"
+                android:text="NONE" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/LOCALITATETxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="LOCALITATE: " />
+            <EditText
+                android:id="@+id/LOCALITATEInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textSize="18dp"
+                android:text="NONE" />
+        </LinearLayout>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/TYPETxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="2dp"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:text="TIP UTILIZATOR: " />
+<!--        <EditText-->
+<!--            android:id="@+id/TYPEInfo"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="2dp"-->
+<!--            android:layout_marginBottom="2dp"-->
+<!--            android:textColor="@color/textColor"-->
+<!--            android:textSize="18dp"-->
+<!--            android:text="Normal" />-->
+            <Spinner
+                android:id="@+id/TypeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:textColor="@color/textColor" />
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/NationalitateTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="NAȚIONALITATE: " />
+            <EditText
+                android:id="@+id/NationalitateInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/textColor"
+                android:textSize="18dp"
+                android:text="Normal" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/ApproveBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="APROBARE"
+            android:onClick="ApproveUser"
+            android:layout_gravity="center"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/RejectBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="RESPINGERE"
+            android:onClick="RejectUser"
+            android:layout_gravity="center"
+            android:textColor="@color/textColor" />
+
+    </LinearLayout>
+</ScrollView>

@@ -68,7 +68,7 @@ public class Login_FaceRecognition extends AppCompatActivity {
     private static final String KEY = "0fa90b7f802f43c39c211da3f8247500";
     private static final String API = "https://eastus.api.cognitive.microsoft.com/face/v1.0";
     private static FaceServiceClient faceServiceClient = new FaceServiceRestClient(API,KEY);
-    private static String personGroupID = "userstorecognize";
+    private static String personGroupID = "recognizeuseraibot";
     private edmt.dev.edmtdevcognitiveface.Contract.Face[] faceDetected;
     private Bitmap bitmap;
 
@@ -119,27 +119,9 @@ public class Login_FaceRecognition extends AppCompatActivity {
             //Toast.makeText(this, "Implementing...Facial Recognition", Toast.LENGTH_LONG).show();
             final ProgressBar progressBar = findViewById(R.id.progressBarLogin);
             progressBar.setVisibility(View.VISIBLE);
-            //FacialRecognition();
-            Intent currIntent = getIntent();
-            String Email = currIntent.getStringExtra(AUTHEMAIL);
-            String Password = currIntent.getStringExtra(AUTHPASS);
-            fAuth.signInWithEmailAndPassword(Email, Password).addOnCompleteListener(
-                    new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(Login_FaceRecognition.this, "Autentificare cu recunoaștere facială completă", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(Login_FaceRecognition.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-            ).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(Login_FaceRecognition.this, "Autentificare eșuată: "+e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
 
+
+            FacialRecognition();
 
         }
     }
@@ -177,8 +159,11 @@ public class Login_FaceRecognition extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(edmt.dev.edmtdevcognitiveface.Contract.Face[] faces) {
-            if(faces == null)
-                Toast.makeText(Login_FaceRecognition.this, "No face detected",  Toast.LENGTH_SHORT).show();
+            if(faces == null) {
+                Toast.makeText(Login_FaceRecognition.this, "No face detected", Toast.LENGTH_SHORT).show();
+                ProgressBar progressBar = findViewById(R.id.progressBarLogin);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
             else
             {
                 imageView.setImageBitmap(Utils.drawFaceRectangleOnBitmap(bitmap,faces, Color.YELLOW));
@@ -287,6 +272,24 @@ public class Login_FaceRecognition extends AppCompatActivity {
             ProgressBar progressBar = findViewById(R.id.progressBarLogin);
             progressBar.setVisibility(View.INVISIBLE);
             Toast.makeText(Login_FaceRecognition.this, "COMPLETE", Toast.LENGTH_SHORT).show();
+            Intent currIntent = getIntent();
+            String Email = currIntent.getStringExtra(AUTHEMAIL);
+            String Password = currIntent.getStringExtra(AUTHPASS);
+            fAuth.signInWithEmailAndPassword(Email, Password).addOnCompleteListener(
+                    new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Toast.makeText(Login_FaceRecognition.this, "Autentificare cu recunoaștere facială completă", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(Login_FaceRecognition.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+            ).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(Login_FaceRecognition.this, "Autentificare eșuată: "+e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
     private void FacialRecognition() {
