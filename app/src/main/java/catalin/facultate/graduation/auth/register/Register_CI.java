@@ -22,6 +22,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +41,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -154,6 +159,26 @@ public class Register_CI extends AppCompatActivity {
                                         documentReference.set(usrMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                progressBar.setVisibility(View.VISIBLE);
+                                                String API = "https://myaibot.azurewebsites.net/api/facerecognition/"+user.getCNP();
+                                                AndroidNetworking.get(API)
+                                                        .build().getAsJSONObject(new JSONObjectRequestListener() {
+                                                    @Override
+                                                    public void onResponse(JSONObject response) {
+                                                        Toast.makeText(Register_CI.this, "Complete", Toast.LENGTH_LONG).show();
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        Intent loginIntent = new Intent(Register_CI.this, Login_Main.class);
+                                                        startActivity(loginIntent);
+                                                    }
+
+                                                    @Override
+                                                    public void onError(ANError anError) {
+                                                        Toast.makeText(Register_CI.this, "Complete-fail response", Toast.LENGTH_LONG).show();
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        Intent loginIntent = new Intent(Register_CI.this, Login_Main.class);
+                                                        startActivity(loginIntent);
+                                                    }
+                                                });
                                                 Log.d("AUTH", "OnSucces: user created");
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
@@ -164,8 +189,8 @@ public class Register_CI extends AppCompatActivity {
                                         });
 
 
-                                        Intent loginIntent = new Intent(Register_CI.this, Login_Main.class);
-                                        startActivity(loginIntent);
+
+
                                     }
                                     else
                                     {

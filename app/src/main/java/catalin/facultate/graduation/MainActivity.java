@@ -99,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     Map<String, Object> user = document.getData();
+                    if(user == null)
+                    {
+                        fAuth.signOut();
+                        Intent startIntent = new Intent(MainActivity.this, Login_Main.class);
+                        startActivity(startIntent);
+                    }
                     boolean admin;
                     if(user.get("TYPE").toString().equals("Admin"))
                         admin = true;
