@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 judet.setText(documentSnapshot.getString("County"));
                 oras.setText(documentSnapshot.getString("Town"));
                 localitate.setText(documentSnapshot.getString("Locality"));
-                type.setText("Normal user");
+                type.setText(documentSnapshot.getString("TYPE"));
 
                 //Load profile pictures
                 LoadImages(documentSnapshot.getString("CNP"));
@@ -170,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
         ref2.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                ImageView img1 = findViewById(R.id.profile2);
+                ImageView img2 = findViewById(R.id.profile2);
                 Picasso.get().load(uri)
                         .rotate(-90)
-                        .into(img1);
+                        .into(img2);
             }
         });
     }

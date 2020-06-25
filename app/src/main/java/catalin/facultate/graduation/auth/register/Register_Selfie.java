@@ -199,7 +199,7 @@ public class Register_Selfie extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(Register_Selfie.this, "Imaginea 1 s-a uploadat cu succes!", Toast.LENGTH_SHORT).show();
                 final StorageReference fileReference2 = storageReference.child("user/"+CNP+"/facial2.jpg");
-                fileReference2.putFile(image_uri1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                fileReference2.putFile(image_uri2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(Register_Selfie.this, "Imaginea 1 s-a uploadat cu succes!", Toast.LENGTH_SHORT).show();

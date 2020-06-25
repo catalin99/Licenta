@@ -168,9 +168,9 @@ namespace AIBot
 
         static void Main(string[] args)
         {
-            //CreatePersonGroup("newrecognizeuseraibotfinal", "newrecognizeuseraibotfinal");
-            AddPersonToGroup("newrecognizeuseraibotfinal", "1990616100159");
-            TrainingAI("newrecognizeuseraibotfinal");
+            //CreatePersonGroup("useridentify", "useridentify");
+            AddPersonToGroup("useridentify", "1990616100159");
+            TrainingAI("useridentify");
             //IdentifyFace("userstorecognize", @"W:\Android\recognizeAI\delia.jpg");
             //faceServiceClient.DeletePersonGroupAsync("usertorecognize");
             Console.ReadKey();

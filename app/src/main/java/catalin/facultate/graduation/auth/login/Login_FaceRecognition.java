@@ -68,7 +68,7 @@ public class Login_FaceRecognition extends AppCompatActivity {
     private static final String KEY = "0fa90b7f802f43c39c211da3f8247500";
     private static final String API = "https://eastus.api.cognitive.microsoft.com/face/v1.0";
     private static FaceServiceClient faceServiceClient = new FaceServiceRestClient(API,KEY);
-    private static String personGroupID = "newrecognizeuseraibotfinal";
+    private static String personGroupID = "useridentify";
     private edmt.dev.edmtdevcognitiveface.Contract.Face[] faceDetected;
     private Bitmap bitmap;
 
